@@ -2,7 +2,7 @@ import FeatureCardList from './FeatureCardList';
 
 const Feature = () => {
   return (
-    <section className="py-20">
+    <section className="py-24" id="fitur">
       <div className="container mx-auto">
         <div className="text-center">
           <h2 className="text-2xl md:text-3xl">Kenapa Harus Pakai CoChat?</h2>
