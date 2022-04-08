@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
-const NavItem = ({ children, href }) => (
-  <li className="text-lg text-white transition duration-300 hover:text-blue-200 md:text-black md:hover:text-blue-500">
+const NavItem = ({ children, href, onClick }) => (
+  <li
+    className="text-lg text-white transition duration-300 hover:text-blue-200 md:text-black md:hover:text-blue-500"
+    onClick={onClick}
+  >
     <a href={href}>{children}</a>
   </li>
 );
@@ -35,10 +38,18 @@ const Navbar = () => {
             </button>
 
             <ul className="flex flex-col space-y-6 md:mt-0 md:flex-row md:space-y-0 md:space-x-10">
-              <NavItem href="#">Beranda</NavItem>
-              <NavItem href="#fitur">Fitur-fitur</NavItem>
-              <NavItem href="#teknologi">Teknologi</NavItem>
-              <NavItem href="#faq">FAQ</NavItem>
+              <NavItem href="#" onClick={() => setOffCanvas(false)}>
+                Beranda
+              </NavItem>
+              <NavItem href="#fitur" onClick={() => setOffCanvas(false)}>
+                Fitur-fitur
+              </NavItem>
+              <NavItem href="#teknologi" onClick={() => setOffCanvas(false)}>
+                Teknologi
+              </NavItem>
+              <NavItem href="#faq" onClick={() => setOffCanvas(false)}>
+                FAQ
+              </NavItem>
             </ul>
           </div>
         </div>
