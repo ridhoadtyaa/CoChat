@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
-const NavItem = ({ children, href, onClick }) => (
-  <li
-    className="text-lg text-white transition duration-300 hover:text-blue-200 md:text-black md:hover:text-blue-500"
-    onClick={onClick}
-  >
-    <a href={href}>{children}</a>
-  </li>
-);
+const NavItem = ({ children, href, onClick }) => {
+  return (
+    <li
+      className={`text-lg text-white transition duration-300 hover:text-blue-200 md:text-black md:hover:text-blue-500`}
+      onClick={onClick}
+    >
+      <a href={href}>{children}</a>
+    </li>
+  );
+};
 
 const Navbar = () => {
   const [offCanvas, setOffCanvas] = useState(false);
