@@ -3,8 +3,8 @@ import { FiTwitter, FiFacebook } from 'react-icons/fi';
 
 const Footer = () => {
   return (
-    <footer className="sm:container mx-auto">
-      <div className="bg-white rounded-t-lg p-8 md:flex">
+    <footer className="sm:container sm:mx-auto">
+      <div className="bg-white rounded-t-lg p-10 md:flex lg:p-16">
         <div className="md:w-4/12">
           <h2 className="font-medium text-lg">👋 CoChat</h2>
           <p className="opacity-60 mt-6">
