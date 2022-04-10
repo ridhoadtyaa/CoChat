@@ -1,6 +1,5 @@
 import { useState } from 'react';
-let navItemsState = {
-  
+const navItemsState = {
   links: [
     {
       id: 1,
@@ -80,33 +79,6 @@ const Navbar = () => {
                   </NavItem>
                 );
               })}
-              {/* <NavItem
-                href="#"
-                onClick={() => {
-                  setOffCanvas(false);
-                  setActiveNav(true);
-                }}
-                className={`${activeNav === true ? 'font-semibold' : ''}`}
-              >
-                Beranda
-              </NavItem>
-              <NavItem
-                href="#fitur"
-                className={`${activeNav === 'fitur' ? 'font-semibold' : ''}`}
-                onClick={() => {
-                  setOffCanvas(false);
-                  setActiveNav('fitur');
-                  console.group(activeNav);
-                }}
-              >
-                Fitur-fitur
-              </NavItem>
-              <NavItem href="#teknologi" onClick={() => setOffCanvas(false)}>
-                Teknologi
-              </NavItem>
-              <NavItem href="#faq" onClick={() => setOffCanvas(false)}>
-                FAQ
-              </NavItem> */}
             </ul>
           </div>
         </div>
