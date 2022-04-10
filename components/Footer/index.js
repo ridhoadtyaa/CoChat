@@ -35,7 +35,9 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#faq" className="font-semibold opacity-60"></a>FAQ
+              <a href="#faq" className="font-semibold opacity-60">
+                FAQ
+              </a>
             </li>
           </ul>
         </div>
