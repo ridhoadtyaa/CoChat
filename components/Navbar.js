@@ -24,7 +24,7 @@ const navItemsState = {
   ],
 };
 
-const NavItem = ({ item, children, href, onClick, className }) => {
+const NavItem = ({ children, href, onClick, className }) => {
   return (
     <li className={className} onClick={onClick}>
       <a href={href}>{children}</a>
