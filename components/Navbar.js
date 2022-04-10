@@ -64,7 +64,6 @@ const Navbar = () => {
               {navItemsState.links.map((item) => {
                 return (
                   <NavItem
-                    item={item}
                     key={item.id}
                     href={item.href}
                     onClick={() => {
