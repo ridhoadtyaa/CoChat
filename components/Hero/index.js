@@ -7,6 +7,7 @@ import ButtonIcon from '../ButtonIcon';
 const Hero = () => {
   const router = useRouter();
   const [inputCode, setInputCode] = useState('');
+
   const submitHandler = (e) => {
     e.preventDefault();
     router.push(`/${inputCode}`);
@@ -15,14 +16,8 @@ const Hero = () => {
   return (
     <section className="container mx-auto py-16 md:flex md:flex-row-reverse">
       <div className="w-full md:pl-8 lg:w-5/12">
-        <h1 className="text-3xl leading-snug lg:text-4xl">
+        <h1 className="text-3xl leading-snug 2xl:text-4xl">
           Nikmati group chat dengan mudah dimanapun dan kapanpun{' '}
-          {/* <Image
-            src="/svg/bendera.svg"
-            alt="Indonesia"
-            width="20"
-            height="20"
-          /> */}
         </h1>
         <p className="mt-6 opacity-60 lg:text-lg">
           CoChat hadir untuk memberikan kedaulatan layanan pesan sementara
