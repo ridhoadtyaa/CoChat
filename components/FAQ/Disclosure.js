@@ -1,4 +1,4 @@
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 
 const listFaq = [
@@ -68,9 +68,18 @@ const DisclosureFaq = () => {
                     } w-7 h-7`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm md:text-base text-white">
-                  {faq.answer}
-                </Disclosure.Panel>
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                >
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm md:text-base text-white">
+                    {faq.answer}
+                  </Disclosure.Panel>
+                </Transition>
               </div>
             )}
           </Disclosure>

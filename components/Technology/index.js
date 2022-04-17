@@ -5,7 +5,7 @@ const Technology = () => {
   return (
     <section id="teknologi">
       <div className="container mx-auto">
-        <div className="md:flex py-24 border-slate-300 border-t">
+        <div className="md:flex py-24 border-slate-200 border-t">
           <div className="md:w-6/12">
             <Image
               src="/img/two-phone.png"

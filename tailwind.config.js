@@ -13,6 +13,11 @@ module.exports = {
         '2xl': '6rem',
       },
     },
+    extend: {
+      colors: {
+        primary: '#4A72FF',
+      },
+    },
   },
   plugins: [],
 };
