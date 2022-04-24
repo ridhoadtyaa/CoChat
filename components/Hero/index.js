@@ -1,12 +1,10 @@
 import Image from 'next/image';
 import { CodeForm } from './form';
-import { useRouter } from 'next/router';
 import { SignIn, auth } from 'config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 const Hero = () => {
-  const router = useRouter();
   const [user] = useAuthState(auth);
 
   return (
