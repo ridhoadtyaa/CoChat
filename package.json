@@ -11,9 +11,11 @@
 	"dependencies": {
 		"@headlessui/react": "^0.0.0-insiders.b4a4e0b",
 		"@heroicons/react": "^1.0.6",
+		"firebase": "^9.6.11",
 		"next": "12.1.4",
 		"react": "18.0.0",
 		"react-dom": "18.0.0",
+		"react-firebase-hooks": "^5.0.3",
 		"react-icons": "^4.3.1"
 	},
 	"devDependencies": {
