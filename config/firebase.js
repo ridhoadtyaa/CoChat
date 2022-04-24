@@ -33,6 +33,7 @@ export const SignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
+        alert('Login berhasil!');
         console.log(GoogleAuthProvider.credentialFromResult(result));
       })
       .catch((error) => {
