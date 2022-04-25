@@ -1,12 +1,6 @@
 import Script from 'next/script';
 import '../styles/globals.css';
 
-// <!-- Global site tag (gtag.js) - Google Analytics -->
-// <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZTLJCEKXY9"></script>
-// <script>
-
-// </script>
-
 function MyApp({ Component, pageProps }) {
   return (
     <>
