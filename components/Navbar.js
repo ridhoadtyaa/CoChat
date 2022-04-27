@@ -1,4 +1,10 @@
+import Image from 'next/image';
+import { Menu } from '@headlessui/react';
 import { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getAuth, signOut } from 'firebase/auth';
+import MenuDropdown from './MenuDropdown';
+
 const navItemsState = {
   links: [
     {
@@ -24,17 +30,34 @@ const navItemsState = {
   ],
 };
 
-const NavItem = ({ children, href, onClick, className }) => {
+const NavItem = ({ children, href, onClick, active }) => {
   return (
-    <li className={className} onClick={onClick}>
+    <li
+      className={`text-lg text-white transition duration-300 hover:text-blue-200 md:text-black md:hover:text-blue-500 ${active}`}
+      onClick={onClick}
+    >
       <a href={href}>{children}</a>
     </li>
   );
 };
 
 const Navbar = () => {
+  const auth = getAuth();
+
+  const logOutHandler = () => {
+    signOut(auth)
+      .then(() => {
+        alert('logout success');
+      })
+      .catch((error) => {
+        console.log('🚀 ~ file: Navbar.js ~ line 51 ~ signOut ~ error', error);
+      });
+  };
+
+  const [user] = useAuthState(auth);
   const [offCanvas, setOffCanvas] = useState(false);
   const [activeId, setActiveId] = useState(1);
+
   return (
     <nav>
       <div className="container mx-auto flex items-center justify-between py-8">
@@ -70,14 +93,42 @@ const Navbar = () => {
                       setActiveId(item.id);
                       setOffCanvas(false);
                     }}
-                    className={`text-lg text-white transition duration-300 hover:text-blue-200 md:text-black md:hover:text-blue-500 ${
-                      activeId === item.id ? 'font-semibold' : ''
-                    }`}
+                    active={`${activeId === item.id ? 'font-semibold' : ''}`}
                   >
                     {item.name}
                   </NavItem>
                 );
               })}
+
+              {user && (
+                <li className="relative">
+                  <MenuDropdown
+                    button={
+                      <Image
+                        width={30}
+                        height={30}
+                        className="rounded-full cursor-pointer"
+                        src="/img/orang.jpeg"
+                        alt="Profile picture"
+                      />
+                    }
+                    widthMenu="w-20"
+                  >
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={logOutHandler}
+                          className={`${
+                            active ? 'bg-primary text-white' : 'text-gray-900'
+                          } group flex rounded-md items-center w-full px-4 py-2 text-sm`}
+                        >
+                          Log Out
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </MenuDropdown>
+                </li>
+              )}
             </ul>
           </div>
         </div>

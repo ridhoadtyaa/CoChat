@@ -15,7 +15,7 @@ const Hero = () => {
         </h1>
         <p className="mt-6 opacity-60 lg:text-lg">
           CoChat hadir untuk memberikan kedaulatan layanan pesan sementara
-          secara instan Indonesia dengan keamanan yang terjamin
+          secara instan dengan keamanan yang terjamin
         </p>
 
         {user ? <CodeForm /> : <SignIn />}
