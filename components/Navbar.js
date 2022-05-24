@@ -1,34 +1,34 @@
+import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
 import { Menu } from '@headlessui/react';
 import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getAuth, signOut } from 'firebase/auth';
 import MenuDropdown from './MenuDropdown';
+import { toast, ToastContainer } from 'react-toastify';
 
-const navItemsState = {
-  links: [
-    {
-      id: 1,
-      name: 'Beranda',
-      href: '#',
-    },
-    {
-      id: 2,
-      name: 'Fitur-fitur',
-      href: '#fitur',
-    },
-    {
-      id: 3,
-      name: 'Teknologi',
-      href: '#teknologi',
-    },
-    {
-      id: 4,
-      name: 'FAQ',
-      href: '#faq',
-    },
-  ],
-};
+const listNavitems = [
+  {
+    id: 1,
+    name: 'Beranda',
+    href: '#',
+  },
+  {
+    id: 2,
+    name: 'Fitur-fitur',
+    href: '#fitur',
+  },
+  {
+    id: 3,
+    name: 'Teknologi',
+    href: '#teknologi',
+  },
+  {
+    id: 4,
+    name: 'FAQ',
+    href: '#faq',
+  },
+];
 
 const NavItem = ({ children, href, onClick, active }) => {
   return (
@@ -47,7 +47,7 @@ const Navbar = () => {
   const logOutHandler = () => {
     signOut(auth)
       .then(() => {
-        alert('logout success');
+        toast.success('Logout Berhasil');
       })
       .catch((error) => {
         console.log('🚀 ~ file: Navbar.js ~ line 51 ~ signOut ~ error', error);
@@ -84,7 +84,7 @@ const Navbar = () => {
             </button>
 
             <ul className="flex flex-col space-y-6 md:mt-0 md:flex-row md:space-y-0 md:space-x-10">
-              {navItemsState.links.map((item) => {
+              {listNavitems.map((item) => {
                 return (
                   <NavItem
                     key={item.id}
@@ -133,6 +133,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </nav>
   );
 };

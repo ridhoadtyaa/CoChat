@@ -8,6 +8,7 @@ import {
   FacebookAuthProvider,
 } from 'firebase/auth';
 import ButtonIcon from '../components/ButtonIcon';
+import { toast } from 'react-toastify';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -33,15 +34,12 @@ export const SignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        alert('Login berhasil!');
+        toast.success('Login Berhasil!');
         console.log(GoogleAuthProvider.credentialFromResult(result));
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // const email = error.email;
         const credential = GoogleAuthProvider.credentialFromError(error);
-        alert(errorCode);
+        toast.error(error.message);
       });
   };
 
@@ -52,11 +50,8 @@ export const SignIn = () => {
         console.log(FacebookAuthProvider.credentialFromResult(result));
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // const email = error.email;
         const credential = FacebookAuthProvider.credentialFromError(error);
-        alert(errorCode);
+        toast.error(error.message);
       });
   };
 

@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { CodeForm } from './form';
-import { SignIn, auth } from 'config/firebase';
+import CodeForm from './Form';
+import { SignIn, auth } from '@/config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import MakeRoom from './MakeRoom';
 
 const Hero = () => {
   const [user] = useAuthState(auth);
@@ -18,7 +18,14 @@ const Hero = () => {
           secara instan dengan keamanan yang terjamin
         </p>
 
-        {user ? <CodeForm /> : <SignIn />}
+        {user ? (
+          <div className="mt-6">
+            <MakeRoom />
+            <CodeForm />
+          </div>
+        ) : (
+          <SignIn />
+        )}
       </div>
       <div className="mt-16 w-full lg:relative lg:-top-10 lg:mt-0 lg:w-7/12">
         <Image src="/img/hero.png" alt="hero" width="675" height="544" />
