@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { CodeForm } from './Form';
+import CodeForm from './form';
 import { SignIn, auth } from '@/config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import MakeRoom from './MakeRoom';
