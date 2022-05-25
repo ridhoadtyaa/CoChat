@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-const CodeForm = () => {
+export const CodeForm = () => {
   const router = useRouter();
   const [inputCode, setInputCode] = useState('');
 
@@ -28,5 +28,3 @@ const CodeForm = () => {
     </div>
   );
 };
-
-export default CodeForm;
