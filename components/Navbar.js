@@ -43,7 +43,9 @@ const NavItem = ({ children, href, onClick, active }) => {
 
 const Navbar = () => {
   const auth = getAuth();
+  // const { uid, photoURL } = auth.currentUser;
 
+  // console.log(uid);
   const logOutHandler = () => {
     signOut(auth)
       .then(() => {
@@ -55,6 +57,7 @@ const Navbar = () => {
   };
 
   const [user] = useAuthState(auth);
+  user ? console.log(auth.currentUser) : console.log('no user');
   const [offCanvas, setOffCanvas] = useState(false);
   const [activeId, setActiveId] = useState(1);
 
@@ -107,8 +110,10 @@ const Navbar = () => {
                       <Image
                         width={30}
                         height={30}
-                        className="rounded-full cursor-pointer"
-                        src="/img/orang.jpeg"
+                        className="cursor-pointer rounded-full"
+                        src={
+                          user ? auth.currentUser.photoURL : '/img/orang.jpeg'
+                        }
                         alt="Profile picture"
                       />
                     }
@@ -120,7 +125,7 @@ const Navbar = () => {
                           onClick={logOutHandler}
                           className={`${
                             active ? 'bg-primary text-white' : 'text-gray-900'
-                          } group flex rounded-md items-center w-full px-4 py-2 text-sm`}
+                          } group flex w-full items-center rounded-md px-4 py-2 text-sm`}
                         >
                           Log Out
                         </button>
