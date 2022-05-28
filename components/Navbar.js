@@ -48,6 +48,7 @@ const Navbar = () => {
     signOut(auth)
       .then(() => {
         toast.success('Logout Berhasil');
+        setOffCanvas(false);
       })
       .catch((error) => {
         console.log('🚀 ~ file: Navbar.js ~ line 51 ~ signOut ~ error', error);
@@ -107,7 +108,7 @@ const Navbar = () => {
                       <Image
                         width={30}
                         height={30}
-                        className="rounded-full cursor-pointer"
+                        className="cursor-pointer rounded-full"
                         src="/img/orang.jpeg"
                         alt="Profile picture"
                       />
@@ -120,7 +121,7 @@ const Navbar = () => {
                           onClick={logOutHandler}
                           className={`${
                             active ? 'bg-primary text-white' : 'text-gray-900'
-                          } group flex rounded-md items-center w-full px-4 py-2 text-sm`}
+                          } group flex w-full items-center rounded-md px-4 py-2 text-sm`}
                         >
                           Log Out
                         </button>
