@@ -43,7 +43,9 @@ const NavItem = ({ children, href, onClick, active }) => {
 
 const Navbar = () => {
   const auth = getAuth();
+  // const { uid, photoURL } = auth.currentUser;
 
+  // console.log(uid);
   const logOutHandler = () => {
     signOut(auth)
       .then(() => {
@@ -56,6 +58,7 @@ const Navbar = () => {
   };
 
   const [user] = useAuthState(auth);
+  user ? console.log(auth.currentUser) : console.log('no user');
   const [offCanvas, setOffCanvas] = useState(false);
   const [activeId, setActiveId] = useState(1);
 
@@ -109,7 +112,9 @@ const Navbar = () => {
                         width={30}
                         height={30}
                         className="cursor-pointer rounded-full"
-                        src="/img/orang.jpeg"
+                        src={
+                          user ? auth.currentUser.photoURL : '/img/orang.jpeg'
+                        }
                         alt="Profile picture"
                       />
                     }

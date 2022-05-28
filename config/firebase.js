@@ -1,6 +1,15 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
-import { getFirestore } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+} from 'firebase/firestore';
+import { analytics } from 'firebase/analytics';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
 import {
   getAuth,
   signInWithPopup,
@@ -28,6 +37,35 @@ export const db = getFirestore();
 
 export const auth = getAuth(app);
 auth.languageCode = 'id';
+
+export const createRoom = async () => {
+  const randomRoomID = (length) => {
+    let result = '';
+    let characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+  try {
+    const roomID =
+      randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase();
+    await setDoc(doc(db, 'room-chat', roomID), {
+      room_master: auth.currentUser.uid,
+      room_name: '',
+      room_description: '',
+      room_picture: '',
+      room_state: 'active',
+      room_created_at: new Date(),
+      chats: {},
+    });
+    return roomID;
+  } catch (error) {
+    console.log('🚀 ~ file: firebase.js ~ line 76 ~ createRoom ~ error', error);
+  }
+};
 
 export const SignIn = () => {
   const signInWithGoogle = () => {
