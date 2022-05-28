@@ -1,10 +1,10 @@
 import { createRoom } from '@/config/firebase';
 
-const MakeRoomButtonHandler = async () => {
-  alert('Success Created Room with ID : ' + (await createRoom()));
-};
-
 const MakeRoom = () => {
+  const MakeRoomButtonHandler = async () => {
+    alert('Success Created Room with ID : ' + (await createRoom()));
+  };
+
   return (
     <button
       onClick={MakeRoomButtonHandler}

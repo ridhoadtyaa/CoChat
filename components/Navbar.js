@@ -139,7 +139,11 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+        position="top-center"
+      />
     </nav>
   );
 };

@@ -2,28 +2,67 @@ import DialogChat from '@/components/DialogChat';
 import HeadChat from '@/components/HeadChat';
 import SEO from '@/components/SEO';
 import { useRouter } from 'next/router';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/config/firebase';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import Image from 'next/image';
 
-const ChatRoom = () => {
+const ChatRoom = ({ code }) => {
   const router = useRouter();
-  const { code } = router.query;
-  console.log(router.query);
+  const [user] = useAuthState(auth);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!user) {
+        router.push('/');
+        toast.error('Silahkan login terlebih dahulu');
+      } else {
+        setIsLoading(false);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [router, user]);
 
   return (
     <>
-      <SEO
-        url={`https://co-chat.vercel.app/${code}`}
-        openGraphType="website"
-        schemaType="Chat Room"
-        title={`CoChat Room - ${code}`}
-        description="CoChat hadir untuk memberikan kedaulatan layanan pesan sementara secara instan Indonesia dengan keamanan yang terjamin."
-        image="/logo.png"
-      />
-      <div className="mx-auto flex max-w-7xl flex-col border-2 bg-white relative">
-        <HeadChat image="/img/taubat.jpg" nameRoom="Remaja Taubat" />
-        <DialogChat />
-      </div>
+      {isLoading ? (
+        <div className="min-h-screen w-full flex">
+          <div className="m-auto">
+            <Image
+              src="/gif/loading.gif"
+              width={230}
+              height={230}
+              alt="Loading"
+            />
+          </div>
+        </div>
+      ) : (
+        <>
+          <SEO
+            url={`https://co-chat.vercel.app/${code}`}
+            openGraphType="website"
+            schemaType="Chat Room"
+            title={`CoChat Room - ${code}`}
+            description="Yuk kita chat ria di CoChat."
+            image="/logo.png"
+          />
+          <div className="relative mx-auto flex max-w-7xl flex-col border-2 bg-white">
+            <HeadChat image="/img/taubat.jpg" nameRoom="Remaja Taubat" />
+            <DialogChat />
+          </div>
+        </>
+      )}
     </>
   );
+};
+
+export const getServerSideProps = ({ params: { code } }) => {
+  return { props: { code } };
 };
 
 export default ChatRoom;
