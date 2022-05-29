@@ -21,12 +21,24 @@ const ChatRoom = ({ code }) => {
       } else {
         setIsLoading(false);
       }
-    }, 500);
+    }, 700);
 
     return () => {
       clearTimeout(timer);
     };
   }, [router, user]);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'auto';
+      }
+    };
+  }, []);
 
   return (
     <>
