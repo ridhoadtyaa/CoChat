@@ -3,7 +3,7 @@ import Image from 'next/image';
 const Chat = ({ text, nameUser, pictureUser, date, self }) => {
   return (
     <div
-      className={`max-w-md sm:max-w-lg lg:max-w-2xl w-fit ${self && 'ml-auto'}`}
+      className={`max-w-xs sm:max-w-lg lg:max-w-2xl w-fit ${self && 'ml-auto'}`}
     >
       <div
         className={`rounded-xl p-4 ${

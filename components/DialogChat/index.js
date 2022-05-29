@@ -4,7 +4,7 @@ import chatRoomStyles from '../../styles/chat-room';
 const DialogChat = () => {
   return (
     <>
-      <section className="min-h-screen">
+      <section className="h-screen">
         <main className="px-4 space-y-10 pt-24 pb-8 overflow-y-scroll h-[90vh]">
           <ChatMessage
             text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."

@@ -14,6 +14,7 @@ const menuList = [
 const MenuChat = () => {
   const [modalUbahNama, setModalUbahNama] = useState(false);
   const [modalUbahFoto, setModalUbahFoto] = useState(false);
+  const [modalBubarkan, setModaBubarkan] = useState(false);
 
   const clickMenuHandler = (menu) => {
     switch (menu) {
@@ -22,6 +23,9 @@ const MenuChat = () => {
         break;
       case 'Ubah Foto Ruangan':
         setModalUbahFoto((prev) => !prev);
+        break;
+      case 'Bubarkan Ruangan':
+        setModaBubarkan((prev) => !prev);
         break;
       case 'Keluar':
         Router.replace('/');
@@ -126,14 +130,29 @@ const MenuChat = () => {
         </div>
 
         <div className="mt-6 flex items-center justify-center space-x-4">
-          <button
-            type="submit"
-            className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600"
-          >
+          <button className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600">
             Ubah
           </button>
           <button
             onClick={() => setModalUbahFoto(false)}
+            className="rounded-md bg-slate-200/80 py-2 px-6 text-sm text-blue-500 transition duration-300 hover:bg-slate-200"
+          >
+            Batalkan
+          </button>
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        closeModal={() => setModaBubarkan(false)}
+        isOpen={modalBubarkan}
+      >
+        <h3 className="text-center text-lg font-semibold">Bubarkan Ruangan</h3>
+        <div className="mt-6 flex items-center justify-center space-x-4">
+          <button className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600">
+            Konfirmasi
+          </button>
+          <button
+            onClick={() => setModaBubarkan(false)}
             className="rounded-md bg-slate-200/80 py-2 px-6 text-sm text-blue-500 transition duration-300 hover:bg-slate-200"
           >
             Batalkan
