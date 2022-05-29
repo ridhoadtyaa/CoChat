@@ -51,7 +51,7 @@ const ChatRoom = ({ code }) => {
             description="Yuk kita chat ria di CoChat."
             image="/logo.png"
           />
-          <div className="relative mx-auto flex max-w-7xl flex-col border-2 bg-white">
+          <div className="mx-auto max-w-7xl border-2 bg-white">
             <HeadChat image="/img/taubat.jpg" nameRoom="Remaja Taubat" />
             <DialogChat />
           </div>
