@@ -28,18 +28,6 @@ const ChatRoom = ({ code }) => {
     };
   }, [router, user]);
 
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      if (typeof document !== 'undefined') {
-        document.body.style.overflow = 'auto';
-      }
-    };
-  }, []);
-
   return (
     <>
       {isLoading ? (
