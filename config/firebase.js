@@ -59,7 +59,7 @@ export const createRoom = async () => {
       room_picture: '',
       room_state: 'active',
       room_created_at: new Date(),
-      chats: {},
+      chats: [],
     });
     return roomID;
   } catch (error) {
