@@ -21,6 +21,7 @@ const DialogChat = ({ code }) => {
   const [message, setMessage] = useState('');
   const [disableButton, setDisableButton] = useState(true);
   const [data, setData] = useState({});
+  const dummy = useRef();
 
   const changeHandler = (e) => {
     setMessage(e.target.value);
@@ -29,7 +30,6 @@ const DialogChat = ({ code }) => {
 
   useEffect(() => {
     onSnapshot(doc(db, 'room-chat', code), (doc) => {
-      console.log('Current data: ', doc.data());
       setData(doc.data());
     });
   }, [code]);
@@ -50,6 +50,7 @@ const DialogChat = ({ code }) => {
       ],
     });
     setMessage('');
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -67,49 +68,7 @@ const DialogChat = ({ code }) => {
                 self={chat.uid === auth.currentUser.uid}
               />
             ))}
-          {/* <ChatMessage
-            text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."
-            nameUser="Ahmad Rifai"
-            pictureUser="/img/orang.jpeg"
-            date="Today, at 15:30"
-          />
-          <ChatMessage
-            text="Waalaikumsalam, tidak apa jika internetnya lancar."
-            nameUser="Ustadz Solmed"
-            pictureUser="/img/solmed.jpg"
-            date="Today, at 15:30"
-            self
-          />
-          <ChatMessage
-            text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."
-            nameUser="Ahmad Rifai"
-            pictureUser="/img/orang.jpeg"
-            date="Today, at 15:30"
-          />
-          <ChatMessage
-            text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."
-            nameUser="Ahmad Rifai"
-            pictureUser="/img/orang.jpeg"
-            date="Today, at 15:30"
-          />
-          <ChatMessage
-            text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."
-            nameUser="Ahmad Rifai"
-            pictureUser="/img/orang.jpeg"
-            date="Today, at 15:30"
-          />
-          <ChatMessage
-            text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."
-            nameUser="Ahmad Rifai"
-            pictureUser="/img/orang.jpeg"
-            date="Today, at 15:30"
-          />
-          <ChatMessage
-            text="Assalamualaikum. Izin tanya, Ustadz. Hukum bayar internet indihom menurut Imam Syafii apa ya, Ustadz? Syukron before."
-            nameUser="Ahmad Rifai"
-            pictureUser="/img/orang.jpeg"
-            date="Today, at 15:30"
-          /> */}
+          <span ref={dummy}></span>
         </main>
         <style jsx>{chatRoomStyles}</style>
       </section>

@@ -52,7 +52,11 @@ const ChatRoom = ({ code }) => {
             image="/logo.png"
           />
           <div className="mx-auto max-w-7xl border-2 bg-white">
-            <HeadChat image="/img/taubat.jpg" nameRoom="Remaja Taubat" />
+            <HeadChat
+              code={code}
+              image="/img/taubat.jpg"
+              nameRoom="Remaja Taubat"
+            />
             <DialogChat code={code} />
           </div>
         </>
