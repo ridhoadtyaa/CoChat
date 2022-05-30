@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu } from '@headlessui/react';
 import Router from 'next/router';
 import MenuDropdown from '../MenuDropdown';
 import CustomModal from '../Modal';
 import Image from 'next/image';
+import { db } from '@/config/firebase';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { toast, ToastContainer } from 'react-toastify';
 
 const menuList = [
   ['Ubah Nama Ruangan', 'Ubah Foto Ruangan'],
@@ -11,10 +14,30 @@ const menuList = [
   ['Bubarkan Ruangan', 'Keluar'],
 ];
 
-const MenuChat = () => {
+const MenuChat = ({ code }) => {
+  const [data, setData] = useState({});
+
   const [modalUbahNama, setModalUbahNama] = useState(false);
+  const [ubahNamaValue, setUbahNamaValue] = useState('');
   const [modalUbahFoto, setModalUbahFoto] = useState(false);
   const [modalBubarkan, setModaBubarkan] = useState(false);
+
+  useEffect(() => {
+    onSnapshot(doc(db, 'room-chat', code), (doc) => {
+      setData(doc.data());
+    });
+  }, [code]);
+
+  const ubahNamaHandler = async (e) => {
+    e.preventDefault();
+    if (ubahNamaValue.length > 0) {
+      await updateDoc(doc(db, 'room-chat', code), {
+        room_name: ubahNamaValue,
+      });
+      setModalUbahNama(false);
+      toast.success('Nama ruangan berhasil diubah');
+    }
+  };
 
   const clickMenuHandler = (menu) => {
     switch (menu) {
@@ -77,6 +100,7 @@ const MenuChat = () => {
         ))}
       </MenuDropdown>
 
+
       {/* Modal */}
 
       {/* Modal Ubah Nama Ruangan */}
@@ -85,9 +109,11 @@ const MenuChat = () => {
         isOpen={modalUbahNama}
         title="Ubah Nama Ruangan"
       >
-        <form>
+        <form onSubmit={ubahNamaHandler}>
           <input
             type="text"
+            onChange={(e) => setUbahNamaValue(e.target.value)}
+            value={ubahNamaValue}
             className="blok block w-full border-b-2 border-blue-500 py-2 px-4 text-center outline-0"
             placeholder="Nama Ruangan"
           />

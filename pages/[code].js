@@ -31,7 +31,7 @@ const ChatRoom = ({ code }) => {
   return (
     <>
       {isLoading ? (
-        <div className="min-h-screen w-full flex">
+        <div className="flex min-h-screen w-full">
           <div className="m-auto">
             <Image
               src="/gif/loading.gif"

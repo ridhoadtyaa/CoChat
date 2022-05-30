@@ -14,7 +14,7 @@ const HeadChat = ({ code }) => {
   }, [code]);
 
   return (
-    <header className="items-center flex justify-between bg-slate-100 px-8 py-3 z-10 fixed w-full max-w-7xl top-0">
+    <header className="fixed top-0 z-10 flex w-full max-w-7xl items-center justify-between bg-slate-100 px-8 py-3">
       <div className="flex items-center space-x-4">
         <div>
           <Image
@@ -30,7 +30,7 @@ const HeadChat = ({ code }) => {
         </div>
         <div className="self-center font-semibold">{data.room_name}</div>
       </div>
-      <MenuChat />
+      <MenuChat code={code} />
     </header>
   );
 };
