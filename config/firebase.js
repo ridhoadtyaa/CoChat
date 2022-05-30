@@ -54,9 +54,10 @@ export const createRoom = async () => {
       randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase();
     await setDoc(doc(db, 'room-chat', roomID), {
       room_master: auth.currentUser.uid,
-      room_name: '',
+      room_name: 'Room ' + roomID,
       room_description: '',
-      room_picture: '',
+      room_picture:
+        'https://firebasestorage.googleapis.com/v0/b/cochat-3fadc.appspot.com/o/room_picture%2FGroup-of-People.jpg?alt=media&token=10948287-5867-4680-94ac-b0508f21cf16',
       room_state: 'active',
       room_created_at: new Date(),
       chats: [],
