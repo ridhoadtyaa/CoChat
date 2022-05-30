@@ -1,15 +1,39 @@
 import { useState } from 'react';
 import ChatMessage from './ChatMessage';
 import chatRoomStyles from '../../styles/chat-room';
+import { useEffect } from 'react';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '@/config/firebase';
 
-const DialogChat = () => {
+// export const getServerSideProps = ({ params: { code } }) => {
+//   console.log(code);
+//   return { props: { code } };
+// };
+
+const DialogChat = ({ code }) => {
   const [message, setMessage] = useState('');
   const [disableButton, setDisableButton] = useState(true);
+  const [data, setData] = useState({});
 
   const changeHandler = (e) => {
     setMessage(e.target.value);
     message.length > 1 ? setDisableButton(false) : setDisableButton(true);
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      const docRef = doc(db, 'room-chat', code);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap.data());
+      setData(docSnap.data());
+    };
+
+    getData();
+  }, [code]);
+
+  onSnapshot(doc(db, 'room-chat', code), (doc) => {
+    setData(doc);
+  });
 
   const sendMessage = (e) => {
     e.preventDefault();
