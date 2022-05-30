@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ChatMessage from './ChatMessage';
 import chatRoomStyles from '../../styles/chat-room';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ const DialogChat = ({ code }) => {
 
   const changeHandler = (e) => {
     setMessage(e.target.value);
-    message.length > 1 ? setDisableButton(false) : setDisableButton(true);
+    message.length > 0 ? setDisableButton(false) : setDisableButton(true);
   };
 
   useEffect(() => {
@@ -49,6 +49,7 @@ const DialogChat = ({ code }) => {
         },
       ],
     });
+    setMessage('');
   };
 
   return (
