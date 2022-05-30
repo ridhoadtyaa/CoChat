@@ -59,9 +59,9 @@ const DialogChat = ({ code }) => {
             data.chats.map((chat) => (
               <ChatMessage
                 text={chat.text}
-                namaUser={chat.displayName}
+                nameUser={chat.displayName}
                 pictureUser={chat.photoURL}
-                date="todsada"
+                date={chat.createdAt.toDate().toDateString()}
                 key={chat.id}
                 self={chat.uid === auth.currentUser.uid}
               />
