@@ -74,7 +74,7 @@ export const SignIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         toast.success('Login Berhasil!');
-        console.log(GoogleAuthProvider.credentialFromResult(result));
+        // console.log(GoogleAuthProvider.credentialFromResult(result));
       })
       .catch((error) => {
         const credential = GoogleAuthProvider.credentialFromError(error);
@@ -86,7 +86,8 @@ export const SignIn = () => {
     const provider = new FacebookAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(FacebookAuthProvider.credentialFromResult(result));
+        toast.success('Login Berhasil!');
+        // console.log(FacebookAuthProvider.credentialFromResult(result));
       })
       .catch((error) => {
         const credential = FacebookAuthProvider.credentialFromError(error);
