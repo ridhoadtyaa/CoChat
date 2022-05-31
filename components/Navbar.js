@@ -1,11 +1,11 @@
-import 'react-toastify/dist/ReactToastify.css';
-import Image from 'next/image';
+import MenuDropdown from './MenuDropdown';
 import { Menu } from '@headlessui/react';
+import { getAuth, signOut } from 'firebase/auth';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { getAuth, signOut } from 'firebase/auth';
-import MenuDropdown from './MenuDropdown';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const listNavitems = [
   {
@@ -43,9 +43,11 @@ const NavItem = ({ children, href, onClick, active }) => {
 
 const Navbar = () => {
   const auth = getAuth();
-  // const { uid, photoURL } = auth.currentUser;
 
-  // console.log(uid);
+  const [user] = useAuthState(auth);
+  const [offCanvas, setOffCanvas] = useState(false);
+  const [activeId, setActiveId] = useState(1);
+
   const logOutHandler = () => {
     signOut(auth)
       .then(() => {
@@ -53,14 +55,9 @@ const Navbar = () => {
         setOffCanvas(false);
       })
       .catch((error) => {
-        console.log('🚀 ~ file: Navbar.js ~ line 51 ~ signOut ~ error', error);
+        toast.error('Terdapat kesalahan, coba lagi nanti');
       });
   };
-
-  const [user] = useAuthState(auth);
-  user ? console.log(auth.currentUser) : console.log('no user');
-  const [offCanvas, setOffCanvas] = useState(false);
-  const [activeId, setActiveId] = useState(1);
 
   return (
     <nav>
@@ -112,9 +109,7 @@ const Navbar = () => {
                         width={35}
                         height={35}
                         className="cursor-pointer rounded-full"
-                        src={
-                          user ? auth.currentUser.photoURL : '/img/orang.jpeg'
-                        }
+                        src={user ? auth.currentUser.photoURL : '/img/orang.jpeg'}
                         alt="Profile picture"
                       />
                     }
@@ -139,11 +134,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <ToastContainer
-        pauseOnFocusLoss={false}
-        pauseOnHover={false}
-        position="top-center"
-      />
     </nav>
   );
 };

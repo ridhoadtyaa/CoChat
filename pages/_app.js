@@ -1,5 +1,6 @@
+import '@/styles/globals.css';
 import Script from 'next/script';
-import '../styles/globals.css';
+import { ToastContainer } from 'react-toastify';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }) {
         gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
         `}
       </Script>
+      <ToastContainer pauseOnFocusLoss={false} pauseOnHover={false} position="top-center" />
       <Component {...pageProps} />
     </>
   );

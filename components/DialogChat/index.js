@@ -1,21 +1,9 @@
-import { useState, useRef } from 'react';
+import chatRoomStyles from '@/styles/chat-room';
+import { auth, db } from '@/config/firebase';
 import ChatMessage from './ChatMessage';
-import chatRoomStyles from '../../styles/chat-room';
+import { Timestamp, doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
-import {
-  doc,
-  getDoc,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-  Timestamp,
-} from 'firebase/firestore';
-import { db, auth } from '@/config/firebase';
-
-// export const getServerSideProps = ({ params: { code } }) => {
-//   console.log(code);
-//   return { props: { code } };
-// };
 
 const DialogChat = ({ code }) => {
   const [message, setMessage] = useState('');
@@ -28,30 +16,40 @@ const DialogChat = ({ code }) => {
     message.length > 0 ? setDisableButton(false) : setDisableButton(true);
   };
 
+  const pasteHandler = (e) => {
+    const value = e.clipboardData.getData('text/plain');
+    setMessage(value);
+    message.length > 0 ? setDisableButton(false) : setDisableButton(true);
+  };
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    const { uid, photoURL, displayName } = auth.currentUser;
+    if (message.length > 0) {
+      await updateDoc(doc(db, 'room-chat', code), {
+        chats: [
+          ...data.chats,
+          {
+            id: Date.now(),
+            text: message,
+            createdAt: Timestamp.now(),
+            uid: uid,
+            displayName: displayName,
+            photoURL: photoURL,
+          },
+        ],
+      });
+      setMessage('');
+      setDisableButton(true);
+      dummy.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   useEffect(() => {
     onSnapshot(doc(db, 'room-chat', code), (doc) => {
       setData(doc.data());
     });
   }, [code]);
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    const { uid, photoURL, displayName } = auth.currentUser;
-    await updateDoc(doc(db, 'room-chat', code), {
-      chats: [
-        ...data.chats,
-        {
-          text: message,
-          createdAt: Timestamp.now(),
-          uid: uid,
-          displayName: displayName,
-          photoURL: photoURL,
-        },
-      ],
-    });
-    setMessage('');
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <>
@@ -81,11 +79,10 @@ const DialogChat = ({ code }) => {
             className="block h-full w-full border-slate-200 px-8 text-lg outline-none placeholder:text-slate-500"
             value={message}
             onChange={changeHandler}
+            onPaste={pasteHandler}
           />
           <button
-            className={`flex h-14 w-16 transition ${
-              disableButton ? 'cursor-not-allowed bg-blue-800' : 'bg-primary'
-            }`}
+            className={`flex h-14 w-16 transition ${disableButton ? 'cursor-not-allowed bg-blue-800' : 'bg-primary'}`}
             type="submit"
             disabled={disableButton}
           >

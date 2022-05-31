@@ -1,12 +1,12 @@
 import DialogChat from '@/components/DialogChat';
 import HeadChat from '@/components/HeadChat';
 import SEO from '@/components/SEO';
-import { useRouter } from 'next/router';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/config/firebase';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 
 const ChatRoom = ({ code }) => {
   const router = useRouter();
@@ -33,12 +33,7 @@ const ChatRoom = ({ code }) => {
       {isLoading ? (
         <div className="flex min-h-screen w-full">
           <div className="m-auto">
-            <Image
-              src="/gif/loading.gif"
-              width={230}
-              height={230}
-              alt="Loading"
-            />
+            <Image src="/gif/loading.gif" width={230} height={230} alt="Loading" />
           </div>
         </div>
       ) : (
@@ -52,11 +47,7 @@ const ChatRoom = ({ code }) => {
             image="/logo.png"
           />
           <div className="mx-auto max-w-7xl border-2 bg-white">
-            <HeadChat
-              code={code}
-              image="/img/taubat.jpg"
-              nameRoom="Remaja Taubat"
-            />
+            <HeadChat code={code} />
             <DialogChat code={code} />
           </div>
         </>
