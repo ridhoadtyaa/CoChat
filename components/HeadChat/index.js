@@ -14,24 +14,26 @@ const HeadChat = ({ code }) => {
   }, [code]);
 
   return (
-    <header className="fixed top-0 z-10 flex w-full max-w-7xl items-center justify-between bg-slate-100 px-8 py-3">
-      <div className="flex items-center space-x-4">
-        <div>
-          <Image
-            className="rounded-full"
-            src={
-              data.room_picture ??
-              'https://firebasestorage.googleapis.com/v0/b/cochat-3fadc.appspot.com/o/room_picture%2FGroup-of-People.jpg?alt=media&token=10948287-5867-4680-94ac-b0508f21cf16'
-            }
-            alt={data.room_name + ' picture'}
-            height={40}
-            width={40}
-          />
+    <>
+      <header className="fixed top-0 z-10 flex w-full max-w-7xl items-center justify-between bg-slate-100 px-8 py-3">
+        <div className="flex items-center space-x-4">
+          <div>
+            <Image
+              className="rounded-full"
+              src={
+                data.room_picture ??
+                'https://firebasestorage.googleapis.com/v0/b/cochat-3fadc.appspot.com/o/room_picture%2FGroup-of-People.jpg?alt=media&token=10948287-5867-4680-94ac-b0508f21cf16'
+              }
+              alt={data.room_name + ' picture'}
+              height={40}
+              width={40}
+            />
+          </div>
+          <div className="self-center font-semibold">{data.room_name}</div>
         </div>
-        <div className="self-center font-semibold">{data.room_name}</div>
-      </div>
-      <MenuChat code={code} />
-    </header>
+        <MenuChat code={code} />
+      </header>
+    </>
   );
 };
 

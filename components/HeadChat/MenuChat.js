@@ -18,24 +18,28 @@ const MenuChat = ({ code }) => {
   const [data, setData] = useState({});
 
   const [modalUbahNama, setModalUbahNama] = useState(false);
-  const [ubahNamaValue, setUbahNamaValue] = useState('');
+  const [namaRuangan, setNamaRuangan] = useState('');
+
   const [modalUbahFoto, setModalUbahFoto] = useState(false);
   const [modalBubarkan, setModaBubarkan] = useState(false);
 
   useEffect(() => {
     onSnapshot(doc(db, 'room-chat', code), (doc) => {
       setData(doc.data());
+      setNamaRuangan(doc.data().room_name);
     });
   }, [code]);
 
   const ubahNamaHandler = async (e) => {
     e.preventDefault();
-    if (ubahNamaValue.length > 0) {
+    if (namaRuangan.length > 0) {
       await updateDoc(doc(db, 'room-chat', code), {
-        room_name: ubahNamaValue,
+        room_name: namaRuangan,
       });
       setModalUbahNama(false);
       toast.success('Nama ruangan berhasil diubah');
+    } else {
+      toast.error('Field harus diisi!');
     }
   };
 
@@ -100,20 +104,24 @@ const MenuChat = ({ code }) => {
         ))}
       </MenuDropdown>
 
-
       {/* Modal */}
 
       {/* Modal Ubah Nama Ruangan */}
       <CustomModal
-        closeModal={() => setModalUbahNama(false)}
+        closeModal={() => {
+          setModalUbahNama(false);
+          setTimeout(() => {
+            setNamaRuangan(data.room_name);
+          }, 200);
+        }}
         isOpen={modalUbahNama}
         title="Ubah Nama Ruangan"
       >
         <form onSubmit={ubahNamaHandler}>
           <input
             type="text"
-            onChange={(e) => setUbahNamaValue(e.target.value)}
-            value={ubahNamaValue}
+            onChange={(e) => setNamaRuangan(e.target.value)}
+            value={namaRuangan}
             className="blok block w-full border-b-2 border-blue-500 py-2 px-4 text-center outline-0"
             placeholder="Nama Ruangan"
           />
@@ -126,7 +134,13 @@ const MenuChat = ({ code }) => {
               Ubah
             </button>
             <button
-              onClick={() => setModalUbahNama(false)}
+              type="button"
+              onClick={() => {
+                setModalUbahNama(false);
+                setTimeout(() => {
+                  setNamaRuangan(data.room_name);
+                }, 200);
+              }}
               className="rounded-md bg-slate-200/80 py-2 px-6 text-sm text-blue-500 transition duration-300 hover:bg-slate-200"
             >
               Batalkan
@@ -136,18 +150,9 @@ const MenuChat = ({ code }) => {
       </CustomModal>
 
       {/* Modal Ubah Foto Ruangan */}
-      <CustomModal
-        closeModal={() => setModalUbahFoto(false)}
-        isOpen={modalUbahFoto}
-      >
+      <CustomModal closeModal={() => setModalUbahFoto(false)} isOpen={modalUbahFoto}>
         <div className="overflow-hidden text-center">
-          <Image
-            src="/img/taubat.jpg"
-            width={120}
-            height={120}
-            className="rounded-full"
-            alt="Room Photo Profile"
-          />
+          <Image src="/img/taubat.jpg" width={120} height={120} className="rounded-full" alt="Room Photo Profile" />
         </div>
 
         <div className="relative mx-auto mt-4 w-fit rounded-full border-2 border-blue-500 py-2 px-8">
@@ -168,10 +173,7 @@ const MenuChat = ({ code }) => {
         </div>
       </CustomModal>
 
-      <CustomModal
-        closeModal={() => setModaBubarkan(false)}
-        isOpen={modalBubarkan}
-      >
+      <CustomModal closeModal={() => setModaBubarkan(false)} isOpen={modalBubarkan}>
         <h3 className="text-center text-lg font-semibold">Bubarkan Ruangan</h3>
         <div className="mt-6 flex items-center justify-center space-x-4">
           <button className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600">
