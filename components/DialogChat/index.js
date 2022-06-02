@@ -84,8 +84,8 @@ const DialogChat = ({ code }) => {
 
   return (
     <>
-      <section>
-        <main className="h-[98vh] space-y-10 overflow-y-scroll px-4 py-24" onScroll={onScroll} ref={chatList}>
+      <section className="relative">
+        <main className="h-screen space-y-10 overflow-y-scroll px-4 py-24" onScroll={onScroll} ref={chatList}>
           {data.chats ? (
             data.chats.map((chat) => (
               <ChatMessage
@@ -109,7 +109,7 @@ const DialogChat = ({ code }) => {
           <button
             onClick={goToBottom}
             title="Scroll to bottom"
-            className={`absolute bottom-24 right-10 flex h-8 w-8 rounded-full bg-blue-400 text-white shadow transition-all ${
+            className={`absolute bottom-24 right-3 flex h-8 w-8 max-w-7xl rounded-full bg-blue-400 text-white shadow transition-all ${
               isOnBottom ? 'hidden' : 'block'
             }`}
           >
