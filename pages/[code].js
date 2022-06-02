@@ -1,63 +1,42 @@
 import DialogChat from '@/components/DialogChat';
 import HeadChat from '@/components/HeadChat';
 import SEO from '@/components/SEO';
-import { auth } from '@/config/firebase';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { db } from '@/services/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import withProtected from '@/hoc/withProtected';
 import { toast } from 'react-toastify';
 
 const ChatRoom = ({ code }) => {
-  const router = useRouter();
-  const [user] = useAuthState(auth);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!user) {
-        router.push('/');
-        toast.error('Silahkan login terlebih dahulu');
-      } else {
-        setIsLoading(false);
-      }
-    }, 700);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [router, user]);
-
   return (
     <>
-      {isLoading ? (
-        <div className="flex min-h-screen w-full">
-          <div className="m-auto">
-            <Image src="/gif/loading.gif" width={230} height={230} alt="Loading" />
-          </div>
-        </div>
-      ) : (
-        <>
-          <SEO
-            url={`https://co-chat.vercel.app/${code}`}
-            openGraphType="website"
-            schemaType="Chat Room"
-            title={`CoChat Room - ${code}`}
-            description="Yuk kita chat ria di CoChat."
-            image="/logo.png"
-          />
-          <div className="mx-auto max-w-7xl border-2 bg-white">
-            <HeadChat code={code} />
-            <DialogChat code={code} />
-          </div>
-        </>
-      )}
+      <SEO
+        url={`https://co-chat.vercel.app/${code}`}
+        openGraphType="website"
+        schemaType="Chat Room"
+        title={`CoChat Room - ${code}`}
+        description="Yuk kita chat ria di CoChat."
+        image="/logo.png"
+      />
+      <div className="mx-auto max-w-7xl border-2 bg-white">
+        <HeadChat code={code} />
+        <DialogChat code={code} />
+      </div>
     </>
   );
 };
 
-export const getServerSideProps = ({ params: { code } }) => {
+export const getServerSideProps = async ({ params: { code } }) => {
+  const docRef = doc(db, 'room-chat', code);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.data() === undefined) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
+  }
   return { props: { code } };
 };
 
-export default ChatRoom;
+export default withProtected(ChatRoom);

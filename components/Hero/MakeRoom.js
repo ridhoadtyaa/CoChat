@@ -1,4 +1,4 @@
-import { createRoom } from '@/config/firebase';
+import { createRoom } from '@/services/firebase';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -33,7 +33,7 @@ const MakeRoom = () => {
         'Buat Ruang Chat'
       ) : (
         <div className="relative -bottom-1">
-          <Image src="/gif/make-room-loading.gif" width={18} height={18} alt="Loading" />
+          <Image src="/gif/circle-loading.gif" width={18} height={18} alt="Loading" />
         </div>
       )}
     </button>
@@ -42,7 +42,7 @@ const MakeRoom = () => {
 
 {
   /* <Image
-        src="/gif/make-room-loading.gif"
+        src="/gif/circle-loading.gif"
         width={20}
         height={20}
         alt="Loading"

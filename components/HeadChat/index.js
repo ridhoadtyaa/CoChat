@@ -1,4 +1,4 @@
-import { db } from '@/config/firebase';
+import { db } from '@/services/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

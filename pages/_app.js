@@ -1,7 +1,9 @@
 import '@/styles/globals.css';
+import AuthStateChangeProvider from '@/context/auth';
 import Script from 'next/script';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserProvider } from '@/context/user';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -21,7 +23,11 @@ function MyApp({ Component, pageProps }) {
         `}
       </Script>
       <ToastContainer pauseOnFocusLoss={false} pauseOnHover={false} position="top-center" />
-      <Component {...pageProps} />
+      <UserProvider>
+        <AuthStateChangeProvider>
+          <Component {...pageProps} />
+        </AuthStateChangeProvider>
+      </UserProvider>
     </>
   );
 }

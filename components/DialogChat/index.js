@@ -1,5 +1,5 @@
 import chatRoomStyles from '@/styles/chat-room';
-import { auth, db } from '@/config/firebase';
+import { auth, db } from '@/services/firebase';
 import ChatMessage from './ChatMessage';
 import { Timestamp, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { useRef, useState } from 'react';
@@ -9,14 +9,22 @@ import Image from 'next/image';
 const DialogChat = ({ code }) => {
   const [message, setMessage] = useState('');
   const [disableButton, setDisableButton] = useState(true);
+  const [isBottom, setIsBottom] = useState(false);
   const [data, setData] = useState({});
   const [sendLoading, setSendLoading] = useState(false);
-  const dummy = useRef();
+  const bottomChat = useRef();
+  const chatList = useRef();
+
+  const goToBottom = () => {
+    // bottomChat.current.scrollIntoView();
+    chatList.current.scrollTop = chatList.current.scrollHeight;
+  };
 
   const changeHandler = (e) => {
     setMessage(e.target.value);
     e.target.value.length > 0 ? setDisableButton(false) : setDisableButton(true);
   };
+
   const sendMessage = async (e) => {
     e.preventDefault();
     setDisableButton(true);
@@ -28,7 +36,7 @@ const DialogChat = ({ code }) => {
         chats: [
           ...data.chats,
           {
-            id: Date.now(),
+            id: Date.now() + uid,
             text: message,
             createdAt: Timestamp.now(),
             uid: uid,
@@ -39,6 +47,7 @@ const DialogChat = ({ code }) => {
       });
       setSendLoading(false);
       setMessage('');
+      bottomChat.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -48,14 +57,35 @@ const DialogChat = ({ code }) => {
     });
   }, [code]);
 
-  useEffect(() => {
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
-  }, [data]);
+  const [isOnBottom, setIsOnBottom] = useState(false);
+  const onScroll = ({ target }) => {
+    if (target.scrollHeight - target.scrollTop <= target.clientHeight + 1) {
+      setIsOnBottom(true);
+    } else {
+      setIsOnBottom(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (chatList.current.scrollTop + chatList.current.clientHeight === chatList.current.scrollHeight) {
+  //     setIsBottom(true);
+  //   } else {
+  //     setIsBottom(false);
+  //   }
+
+  //   chatList.current.addEventListener('scroll', () => {
+  //     if (chatList.current.scrollTop + chatList.current.clientHeight === chatList.current.scrollHeight) {
+  //       setIsBottom(true);
+  //     } else {
+  //       setIsBottom(false);
+  //     }
+  //   });
+  // }, [chatList]);
 
   return (
     <>
-      <section className="h-screen">
-        <main className="h-screen space-y-10 overflow-y-scroll px-4 py-24">
+      <section>
+        <main className="h-[98vh] space-y-10 overflow-y-scroll px-4 py-24" onScroll={onScroll} ref={chatList}>
           {data.chats ? (
             data.chats.map((chat) => (
               <ChatMessage
@@ -68,13 +98,25 @@ const DialogChat = ({ code }) => {
               />
             ))
           ) : (
-            <div className="flex justify-center">
-              <Image src="/gif/make-room-loading.gif" width={40} height={40} alt="Loading" />
+            <div className="flex justify-center pt-24">
+              <Image src="/gif/circle-loading.gif" width={40} height={40} alt="Loading" />
             </div>
           )}
-          <span ref={dummy}></span>
+          <span ref={bottomChat}></span>
         </main>
         <style jsx>{chatRoomStyles}</style>
+        {!isOnBottom && (
+          <button
+            onClick={goToBottom}
+            title="Scroll to bottom"
+            className={`absolute bottom-24 right-10 flex h-8 w-8 rounded-full bg-blue-400 text-white shadow transition-all ${
+              isOnBottom ? 'hidden' : 'block'
+            }`}
+          >
+            {/* prettier-ignore */}
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className='m-auto w-5' preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill="white" d="M11.74 7.7a.75.75 0 1 1 1.02 1.1l-4.25 4a.75.75 0 0 1-1.02 0l-4.25-4a.75.75 0 1 1 1.02-1.1L8 11.226L11.74 7.7Zm0-4a.75.75 0 1 1 1.02 1.1l-4.25 4a.75.75 0 0 1-1.02 0l-4.25-4a.75.75 0 1 1 1.02-1.1L8 7.227L11.74 3.7Z"/></svg>
+          </button>
+        )}
       </section>
 
       <form onSubmit={sendMessage}>
@@ -94,7 +136,7 @@ const DialogChat = ({ code }) => {
           >
             {sendLoading ? (
               <div className="relative -bottom-1 m-auto">
-                <Image src="/gif/make-room-loading.gif" width={24} height={24} alt="Loading" />
+                <Image src="/gif/circle-loading.gif" width={24} height={24} alt="Loading" />
               </div>
             ) : (
               <svg

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import CodeForm from './form';
-import { SignIn, auth } from '@/config/firebase';
+import { SignIn, auth } from '@/services/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import MakeRoom from './MakeRoom';
 
@@ -10,12 +10,9 @@ const Hero = () => {
   return (
     <section className="container mx-auto py-16 md:flex md:flex-row-reverse">
       <div className="w-full md:pl-8 lg:w-5/12">
-        <h1 className="text-3xl leading-snug 2xl:text-4xl">
-          Nikmati group chat dengan mudah dimanapun dan kapanpun{' '}
-        </h1>
+        <h1 className="text-3xl leading-snug 2xl:text-4xl">Nikmati group chat dengan mudah dimanapun dan kapanpun </h1>
         <p className="mt-6 opacity-60 lg:text-lg">
-          CoChat hadir untuk memberikan kedaulatan layanan pesan sementara
-          secara instan dengan keamanan yang terjamin
+          CoChat hadir untuk memberikan kedaulatan layanan pesan sementara secara instan dengan keamanan yang terjamin
         </p>
 
         {user ? (

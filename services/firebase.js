@@ -1,22 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  addDoc,
-  collection,
-} from 'firebase/firestore';
-import { analytics } from 'firebase/analytics';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-} from 'firebase/auth';
-import ButtonIcon from '../components/ButtonIcon';
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
+import ButtonIcon from '@/components/ButtonIcon';
 import { toast } from 'react-toastify';
 
 const firebaseConfig = {
@@ -38,11 +25,14 @@ export const db = getFirestore();
 export const auth = getAuth(app);
 auth.languageCode = 'id';
 
+export const Authentication = () => {
+  return auth;
+};
+
 export const createRoom = async () => {
   const randomRoomID = (length) => {
     let result = '';
-    let characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -51,7 +41,7 @@ export const createRoom = async () => {
   };
   try {
     const roomID =
-      randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase();
+      randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase();
     await setDoc(doc(db, 'room-chat', roomID), {
       room_master: auth.currentUser.uid,
       room_name: 'Room ' + roomID,

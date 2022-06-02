@@ -4,9 +4,9 @@ import Router from 'next/router';
 import MenuDropdown from '../MenuDropdown';
 import CustomModal from '../Modal';
 import Image from 'next/image';
-import { db } from '@/config/firebase';
+import { db } from '@/services/firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const menuList = [
   ['Ubah Nama Ruangan', 'Ubah Foto Ruangan'],

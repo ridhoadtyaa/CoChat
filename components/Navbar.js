@@ -3,9 +3,8 @@ import { Menu } from '@headlessui/react';
 import { getAuth, signOut } from 'firebase/auth';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useUser } from '@/context/user';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const listNavitems = [
   {
@@ -43,8 +42,8 @@ const NavItem = ({ children, href, onClick, active }) => {
 
 const Navbar = () => {
   const auth = getAuth();
+  const user = useUser();
 
-  const [user] = useAuthState(auth);
   const [offCanvas, setOffCanvas] = useState(false);
   const [activeId, setActiveId] = useState(1);
 
@@ -101,7 +100,7 @@ const Navbar = () => {
                 );
               })}
 
-              {user && (
+              {user.isLogin && (
                 <li className="relative">
                   <MenuDropdown
                     button={
@@ -109,7 +108,7 @@ const Navbar = () => {
                         width={35}
                         height={35}
                         className="cursor-pointer rounded-full"
-                        src={user ? auth.currentUser.photoURL : '/img/orang.jpeg'}
+                        src={user.photoUrl}
                         alt="Profile picture"
                       />
                     }
