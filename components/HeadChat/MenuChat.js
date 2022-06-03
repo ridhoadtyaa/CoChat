@@ -7,15 +7,46 @@ import Image from 'next/image';
 import { db } from '@/services/firebase';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
+import { useUser } from '@/context/user';
 
 const menuList = [
-  ['Ubah Nama Ruangan', 'Ubah Foto Ruangan'],
-  ['Daftar Anggota', 'Bagikan Info'],
-  ['Bubarkan Ruangan', 'Keluar'],
+  [
+    {
+      label: 'Ubah Nama Ruangan',
+      isMaster: true,
+    },
+    {
+      label: 'Ubah Foto Ruangan',
+      isMaster: true,
+    },
+  ],
+  [
+    {
+      label: 'Daftar Anggota',
+      isMaster: false,
+    },
+    {
+      label: 'Bagikan Info',
+      isMaster: false,
+    },
+  ],
+  [
+    {
+      label: 'Bubarkan Ruangan',
+      isMaster: true,
+    },
+    {
+      label: 'Keluar',
+      isMaster: false,
+    },
+  ],
 ];
 
 const MenuChat = ({ code }) => {
+  const user = useUser();
   const [data, setData] = useState({});
+
+  const menuNotMaster = menuList.map((menu) => menu.filter((item) => !item.isMaster)).slice(1);
 
   const [modalUbahNama, setModalUbahNama] = useState(false);
   const [namaRuangan, setNamaRuangan] = useState('');
@@ -84,24 +115,43 @@ const MenuChat = ({ code }) => {
         }
         widthMenu="w-56"
       >
-        {menuList.map((item, index) => (
-          <div className="px-1 py-1" key={index}>
-            {item.map((item, index) => (
-              <Menu.Item key={index}>
-                {({ active }) => (
-                  <button
-                    onClick={() => clickMenuHandler(item)}
-                    className={`${
-                      active ? 'bg-primary text-white' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    {item}
-                  </button>
-                )}
-              </Menu.Item>
+        {user.uid === data.room_master
+          ? menuList.map((item, index) => (
+              <div className="px-1 py-1" key={index}>
+                {item.map((item, index) => (
+                  <Menu.Item key={index}>
+                    {({ active }) => (
+                      <button
+                        onClick={() => clickMenuHandler(item.label)}
+                        className={`${
+                          active ? 'bg-primary text-white' : 'text-gray-900'
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        {item.label}
+                      </button>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
+            ))
+          : menuNotMaster.map((item, index) => (
+              <div className="px-1 py-1" key={index}>
+                {item.map((item, index) => (
+                  <Menu.Item key={index}>
+                    {({ active }) => (
+                      <button
+                        onClick={() => clickMenuHandler(item.label)}
+                        className={`${
+                          active ? 'bg-primary text-white' : 'text-gray-900'
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        {item.label}
+                      </button>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
             ))}
-          </div>
-        ))}
       </MenuDropdown>
 
       {/* Modal */}

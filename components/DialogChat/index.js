@@ -9,14 +9,13 @@ import Image from 'next/image';
 const DialogChat = ({ code }) => {
   const [message, setMessage] = useState('');
   const [disableButton, setDisableButton] = useState(true);
-  const [isBottom, setIsBottom] = useState(false);
+  const [isOnBottom, setIsOnBottom] = useState(false);
   const [data, setData] = useState({});
   const [sendLoading, setSendLoading] = useState(false);
   const bottomChat = useRef();
   const chatList = useRef();
 
   const goToBottom = () => {
-    // bottomChat.current.scrollIntoView();
     chatList.current.scrollTop = chatList.current.scrollHeight;
   };
 
@@ -57,7 +56,6 @@ const DialogChat = ({ code }) => {
     });
   }, [code]);
 
-  const [isOnBottom, setIsOnBottom] = useState(false);
   const onScroll = ({ target }) => {
     if (target.scrollHeight - target.scrollTop <= target.clientHeight + 1) {
       setIsOnBottom(true);
@@ -65,22 +63,6 @@ const DialogChat = ({ code }) => {
       setIsOnBottom(false);
     }
   };
-
-  // useEffect(() => {
-  //   if (chatList.current.scrollTop + chatList.current.clientHeight === chatList.current.scrollHeight) {
-  //     setIsBottom(true);
-  //   } else {
-  //     setIsBottom(false);
-  //   }
-
-  //   chatList.current.addEventListener('scroll', () => {
-  //     if (chatList.current.scrollTop + chatList.current.clientHeight === chatList.current.scrollHeight) {
-  //       setIsBottom(true);
-  //     } else {
-  //       setIsBottom(false);
-  //     }
-  //   });
-  // }, [chatList]);
 
   return (
     <>
@@ -109,9 +91,7 @@ const DialogChat = ({ code }) => {
           <button
             onClick={goToBottom}
             title="Scroll to bottom"
-            className={`absolute bottom-24 right-3 flex h-8 w-8 max-w-7xl rounded-full bg-blue-400 text-white shadow transition-all ${
-              isOnBottom ? 'hidden' : 'block'
-            }`}
+            className={`absolute bottom-24 right-3 flex h-8 w-8 max-w-7xl rounded-full bg-blue-400 text-white shadow transition-all`}
           >
             {/* prettier-ignore */}
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className='m-auto w-5' preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill="white" d="M11.74 7.7a.75.75 0 1 1 1.02 1.1l-4.25 4a.75.75 0 0 1-1.02 0l-4.25-4a.75.75 0 1 1 1.02-1.1L8 11.226L11.74 7.7Zm0-4a.75.75 0 1 1 1.02 1.1l-4.25 4a.75.75 0 0 1-1.02 0l-4.25-4a.75.75 0 1 1 1.02-1.1L8 7.227L11.74 3.7Z"/></svg>
