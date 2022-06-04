@@ -50,12 +50,6 @@ const DialogChat = ({ code }) => {
     }
   };
 
-  useEffect(() => {
-    onSnapshot(doc(db, 'room-chat', code), (doc) => {
-      setData(doc.data());
-    });
-  }, [code]);
-
   const onScroll = ({ target }) => {
     if (target.scrollHeight - target.scrollTop <= target.clientHeight + 1) {
       setIsOnBottom(true);
@@ -63,6 +57,16 @@ const DialogChat = ({ code }) => {
       setIsOnBottom(false);
     }
   };
+
+  useEffect(() => {
+    onSnapshot(doc(db, 'room-chat', code), (doc) => {
+      setData(doc.data());
+    });
+  }, [code]);
+
+  useEffect(() => {
+    setIsOnBottom(false);
+  }, []);
 
   return (
     <>
