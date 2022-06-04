@@ -52,8 +52,7 @@ const MenuChat = ({ code }) => {
   const [searchAnggota, setSearchAnggota] = useState('');
 
   const [imageAsFile, setImageAsFile] = useState('');
-  const [imageAsUrl, setImageAsUrl] = useState();
-  const [buttonUploadState, setButtonUploadState] = useState('Ubah');
+  const [percentUpload, setPercentUpload] = useState('');
 
   const menuNotMaster = menuList.map((menu) => menu.filter((item) => !item.isMaster)).slice(1);
 
@@ -74,7 +73,6 @@ const MenuChat = ({ code }) => {
 
   useEffect(() => {
     onSnapshot(doc(db, 'room-chat', code), (doc) => {
-      setImageAsUrl(doc.data().room_picture ?? '/img/taubat.jpg');
       setData(doc.data());
       setNamaRuangan(doc.data().room_name);
     });
@@ -100,9 +98,9 @@ const MenuChat = ({ code }) => {
 
   const ubahFotoHandler = async (e) => {
     e.preventDefault();
-    console.log('start of upload');
+
     if (imageAsFile.type.split('/')[0] != 'image') {
-      console.error(`not an image, the image file is a ${typeof imageAsFile}`);
+      toast.error('Yang anda pilih bukan gambar!');
     } else {
       const storageRef = ref(storage, 'room_pictures/' + uuidv4().toString());
       const uploadTask = uploadBytesResumable(storageRef, imageAsFile);
@@ -110,12 +108,7 @@ const MenuChat = ({ code }) => {
         'state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`upload is ${progress}% done`);
-          switch (snapshot.state) {
-            case 'running':
-              setButtonUploadState('Mengunggah');
-              break;
-          }
+          setPercentUpload(`${Math.round(progress)}%`);
         },
         (error) => {
           console.error(error);
@@ -133,13 +126,20 @@ const MenuChat = ({ code }) => {
               room_picture: url,
             });
             toast.success('Foto ruangan berhasil diubah');
-            setImageAsUrl(url);
+            setPercentUpload('');
             setModalUbahFoto(false);
-            setButtonUploadState('Ubah');
           });
         }
       );
     }
+  };
+
+  const salinInfoHandler = () => {
+    const customText = `Hey, kamu diundang ke room ${data.room_name}\nhttps://co-chat.vercel.app/${data.room_code}\nAyo berchat ria di CoChat!`;
+
+    navigator.clipboard.writeText(customText);
+    toast.success('Info ruangan berhasil disalin');
+    setModalBagikanInfo(false);
   };
 
   const clickMenuHandler = (menu) => {
@@ -276,7 +276,13 @@ const MenuChat = ({ code }) => {
       {/* Modal Ubah Foto Ruangan */}
       <CustomModal closeModal={() => setModalUbahFoto(false)} isOpen={modalUbahFoto}>
         <div className="overflow-hidden text-center">
-          <Image src={imageAsUrl} width={120} height={120} className="rounded-full" alt="Room Photo Profile" />
+          <Image
+            src={data.room_picture}
+            width={120}
+            height={120}
+            className="rounded-full object-cover"
+            alt="Room Photo Profile"
+          />
         </div>
         <form onSubmit={ubahFotoHandler}>
           <div className="relative mx-auto mt-4 w-fit rounded-full border-2 border-blue-500 py-2 px-8">
@@ -286,12 +292,16 @@ const MenuChat = ({ code }) => {
 
           <div className="mt-6 flex items-center justify-center space-x-4">
             <button
-              className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600"
-              disabled={buttonUploadState === 'Mengunggah' ? true : false}
+              type="submit"
+              className={`rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600 ${
+                percentUpload && 'cursor-not-allowed bg-slate-400 hover:bg-slate-400'
+              }`}
+              disabled={percentUpload ? true : false}
             >
-              {buttonUploadState}
+              {percentUpload ? percentUpload : 'Ubah'}
             </button>
             <button
+              type="button"
               onClick={() => setModalUbahFoto(false)}
               className="rounded-md bg-slate-200/80 py-2 px-6 text-sm text-blue-500 transition duration-300 hover:bg-slate-200"
             >
@@ -306,7 +316,7 @@ const MenuChat = ({ code }) => {
         <div className="relative">
           <input
             type="text"
-            className="w-full border-b-2 border-slate-300 bg-slate-200 py-1 px-4 outline-none focus:border-slate-400"
+            className="w-full border-b-2 border-slate-300 bg-slate-200 py-1 px-4 outline-none focus:border-primary"
             placeholder="Cari anggota"
             value={searchAnggota}
             onChange={(e) => setSearchAnggota(e.target.value)}
@@ -344,6 +354,19 @@ const MenuChat = ({ code }) => {
             Chat di room ini jika ingin menjadi anggota pertama.
           </div>
         )}
+      </CustomModal>
+
+      {/* Modal bagikan info */}
+      <CustomModal closeModal={() => setModalBagikanInfo(false)} isOpen={modalBagikanInfo}>
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-fit rounded-full bg-slate-200 py-2 px-6 text-center">{data.room_code}</div>
+          <button
+            onClick={salinInfoHandler}
+            className="flex w-fit items-center rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600"
+          >
+            Salin Info
+          </button>
+        </div>
       </CustomModal>
 
       {/* Modal bubarkan ruangan */}
