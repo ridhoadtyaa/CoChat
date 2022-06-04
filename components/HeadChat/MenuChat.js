@@ -116,12 +116,12 @@ const MenuChat = ({ code }) => {
         () => {
           getDownloadURL(storageRef).then((url) => {
             // Delete image on firestorage before if already set
-            if (data.room_picture != '') {
-              const regex = /room_pictures%2F(.*?)\?/gm;
-              const roomPictureBefore = regex.exec(data.room_picture)[1];
-              const desertRef = ref(storage, 'room_pictures/' + roomPictureBefore);
-              deleteObject(desertRef);
-            }
+            // if (data.room_picture != '') {
+            //   const regex = /room_pictures%2F(.*?)\?/gm;
+            //   const roomPictureBefore = regex.exec(data.room_picture)[1];
+            //   const desertRef = ref(storage, 'room_pictures/' + roomPictureBefore);
+            //   deleteObject(desertRef);
+            // }
             updateDoc(doc(db, 'room-chat', code), {
               room_picture: url,
             });
@@ -274,7 +274,13 @@ const MenuChat = ({ code }) => {
       </CustomModal>
 
       {/* Modal Ubah Foto Ruangan */}
-      <CustomModal closeModal={() => setModalUbahFoto(false)} isOpen={modalUbahFoto}>
+      <CustomModal
+        closeModal={() => {
+          setModalUbahFoto(false);
+          setPercentUpload('');
+        }}
+        isOpen={modalUbahFoto}
+      >
         <div className="overflow-hidden text-center">
           <Image
             src={data.room_picture}
