@@ -78,7 +78,11 @@ const DialogChat = ({ code }) => {
                 text={chat.text}
                 nameUser={chat.displayName}
                 pictureUser={chat.photoURL}
-                date={chat.createdAt.toDate().toDateString() + ' ' + chat.createdAt.toDate().toLocaleTimeString()}
+                date={
+                  chat.createdAt.toDate().toDateString() +
+                  ' ' +
+                  chat.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                }
                 key={chat.id}
                 self={chat.uid === auth.currentUser.uid}
               />

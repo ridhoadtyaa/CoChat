@@ -19,7 +19,7 @@ const HeadChat = ({ code }) => {
         <div className="flex items-center space-x-4">
           <div>
             <Image
-              className="rounded-full"
+              className="rounded-full object-cover"
               src={
                 data.room_picture ??
                 'https://firebasestorage.googleapis.com/v0/b/cochat-3fadc.appspot.com/o/room_picture%2FGroup-of-People.jpg?alt=media&token=10948287-5867-4680-94ac-b0508f21cf16'
