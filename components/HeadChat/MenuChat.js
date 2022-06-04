@@ -4,7 +4,9 @@ import Router from 'next/router';
 import MenuDropdown from '../MenuDropdown';
 import CustomModal from '../Modal';
 import Image from 'next/image';
-import { db } from '@/services/firebase';
+import { v4 as uuidv4 } from 'uuid';
+import { db, storage } from '@/services/firebase';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { useUser } from '@/context/user';
@@ -49,6 +51,10 @@ const MenuChat = ({ code }) => {
   const [namaRuangan, setNamaRuangan] = useState('');
   const [searchAnggota, setSearchAnggota] = useState('');
 
+  const [imageAsFile, setImageAsFile] = useState('');
+  const [imageAsUrl, setImageAsUrl] = useState();
+  const [buttonUploadState, setButtonUploadState] = useState('Ubah');
+
   const menuNotMaster = menuList.map((menu) => menu.filter((item) => !item.isMaster)).slice(1);
 
   const listAnggota = [];
@@ -68,6 +74,7 @@ const MenuChat = ({ code }) => {
 
   useEffect(() => {
     onSnapshot(doc(db, 'room-chat', code), (doc) => {
+      setImageAsUrl(doc.data().room_picture ?? '/img/taubat.jpg');
       setData(doc.data());
       setNamaRuangan(doc.data().room_name);
     });
@@ -83,6 +90,55 @@ const MenuChat = ({ code }) => {
       toast.success('Nama ruangan berhasil diubah');
     } else {
       toast.error('Field harus diisi!');
+    }
+  };
+
+  const ubahFotoHandlerAsFile = (e) => {
+    const image = e.target.files[0];
+    setImageAsFile((imageFile) => image);
+  };
+
+  const ubahFotoHandler = async (e) => {
+    e.preventDefault();
+    console.log('start of upload');
+    if (imageAsFile.type.split('/')[0] != 'image') {
+      console.error(`not an image, the image file is a ${typeof imageAsFile}`);
+    } else {
+      const storageRef = ref(storage, 'room_pictures/' + uuidv4().toString());
+      const uploadTask = uploadBytesResumable(storageRef, imageAsFile);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`upload is ${progress}% done`);
+          switch (snapshot.state) {
+            case 'running':
+              setButtonUploadState('Mengunggah');
+              break;
+          }
+        },
+        (error) => {
+          console.error(error);
+        },
+        () => {
+          getDownloadURL(storageRef).then((url) => {
+            // Delete image on firestorage before if already set
+            if (data.room_picture != '') {
+              const regex = /room_pictures%2F(.*?)\?/gm;
+              const roomPictureBefore = regex.exec(data.room_picture)[1];
+              const desertRef = ref(storage, 'room_pictures/' + roomPictureBefore);
+              deleteObject(desertRef);
+            }
+            updateDoc(doc(db, 'room-chat', code), {
+              room_picture: url,
+            });
+            toast.success('Foto ruangan berhasil diubah');
+            setImageAsUrl(url);
+            setModalUbahFoto(false);
+            setButtonUploadState('Ubah');
+          });
+        }
+      );
     }
   };
 
@@ -220,25 +276,29 @@ const MenuChat = ({ code }) => {
       {/* Modal Ubah Foto Ruangan */}
       <CustomModal closeModal={() => setModalUbahFoto(false)} isOpen={modalUbahFoto}>
         <div className="overflow-hidden text-center">
-          <Image src="/img/taubat.jpg" width={120} height={120} className="rounded-full" alt="Room Photo Profile" />
+          <Image src={imageAsUrl} width={120} height={120} className="rounded-full" alt="Room Photo Profile" />
         </div>
+        <form onSubmit={ubahFotoHandler}>
+          <div className="relative mx-auto mt-4 w-fit rounded-full border-2 border-blue-500 py-2 px-8">
+            <span className="text-sm font-semibold">Upload Foto Ruangan</span>
+            <input type="file" onChange={ubahFotoHandlerAsFile} className="absolute inset-0 opacity-0" />
+          </div>
 
-        <div className="relative mx-auto mt-4 w-fit rounded-full border-2 border-blue-500 py-2 px-8">
-          <span className="text-sm font-semibold">Upload Foto Ruangan</span>
-          <input type="file" className="absolute inset-0 opacity-0" />
-        </div>
-
-        <div className="mt-6 flex items-center justify-center space-x-4">
-          <button className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600">
-            Ubah
-          </button>
-          <button
-            onClick={() => setModalUbahFoto(false)}
-            className="rounded-md bg-slate-200/80 py-2 px-6 text-sm text-blue-500 transition duration-300 hover:bg-slate-200"
-          >
-            Batalkan
-          </button>
-        </div>
+          <div className="mt-6 flex items-center justify-center space-x-4">
+            <button
+              className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600"
+              disabled={buttonUploadState === 'Mengunggah' ? true : false}
+            >
+              {buttonUploadState}
+            </button>
+            <button
+              onClick={() => setModalUbahFoto(false)}
+              className="rounded-md bg-slate-200/80 py-2 px-6 text-sm text-blue-500 transition duration-300 hover:bg-slate-200"
+            >
+              Batalkan
+            </button>
+          </div>
+        </form>
       </CustomModal>
 
       {/* Modal daftar anggota */}
