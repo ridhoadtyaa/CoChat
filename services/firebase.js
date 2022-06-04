@@ -43,6 +43,7 @@ export const createRoom = async () => {
     const roomID =
       randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase() + '-' + randomRoomID(3).toUpperCase();
     await setDoc(doc(db, 'room-chat', roomID), {
+      room_code: roomID,
       room_master: auth.currentUser.uid,
       room_name: 'Room ' + roomID,
       room_description: '',
