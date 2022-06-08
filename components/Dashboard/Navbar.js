@@ -2,7 +2,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 
 const NavbarDashboard = () => {
   return (
-    <nav className="fixed top-0 flex h-fit w-full items-center justify-between border-b border-slate-200 bg-white px-10 py-4 pr-24">
+    <nav className="fixed top-0 z-10 flex h-fit w-full items-center justify-between border-b border-slate-200 bg-white px-10 py-4 pr-24">
       <h3 className="text-lg font-semibold">Hi, Admin!</h3>
 
       <div className="relative">
