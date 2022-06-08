@@ -6,8 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import bcrypt from 'bcryptjs';
 import Head from 'next/head';
-import { sign } from 'jsonwebtoken';
-import { verify } from 'jsonwebtoken';
+import * as jose from 'jose';
 import { toast } from 'react-toastify';
 
 const secret = process.env.NEXT_PUBLIC_SECRET_JWT;
@@ -17,7 +16,7 @@ export const getServerSideProps = async ({ req }) => {
 
   if (token) {
     try {
-      verify(token, secret);
+      await jose.jwtVerify(token, new TextEncoder().encode(secret));
 
       return {
         redirect: {
@@ -66,17 +65,14 @@ const Admin = () => {
     const adminSnap = await getDoc(adminRef);
 
     if (adminSnap.exists()) {
-      bcrypt.compare(fields.password, adminSnap.data().password, (err, res) => {
+      bcrypt.compare(fields.password, adminSnap.data().password, async (err, res) => {
         if (res) {
-          const tokenJWT = sign(
-            {
-              exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-              username: fields.username,
-            },
-            secret
-          );
+          const jwtToken = await new jose.SignJWT({ username: fields.username })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setIssuedAt()
+            .sign(new TextEncoder().encode(secret));
 
-          Cookies.set('token', tokenJWT, { path: '/' });
+          Cookies.set('token', jwtToken, { path: '/' });
           Cookies.set('username', fields.username);
           routes.push('/dashboard');
         } else {

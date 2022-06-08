@@ -27,7 +27,7 @@ const Table = () => {
           <tr>
             <th className="border bg-blue-200 px-8 py-4 text-left">Room Name</th>
             <th className="border bg-blue-200 px-8 py-4 text-left">Room Code</th>
-            <th className="border bg-blue-200 px-8 py-4 text-left">Room State</th>
+            <th className="border bg-blue-200 px-8 py-4 text-left">Room Status</th>
           </tr>
         </thead>
         <tbody>

@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken';
+import * as jose from 'jose';
 import { NextResponse } from 'next/server';
 
 const secret = process.env.NEXT_PUBLIC_SECRET_JWT;
@@ -14,7 +14,7 @@ export const middleware = async (req) => {
   }
 
   try {
-    verify(token, secret);
+    await jose.jwtVerify(token, new TextEncoder().encode(secret));
 
     return NextResponse.next();
   } catch {

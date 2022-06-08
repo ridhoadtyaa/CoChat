@@ -18,7 +18,7 @@ const DashboardPage = ({ title = 'Dashboard', children }) => {
             <h3 className="text-xl font-semibold">{title}</h3>
 
             <div className="mt-8 grow">{children}</div>
-            <div className="text-slate-500">Copyright &copy; 2022 CoChat</div>
+            <div className="mt-10 text-slate-500">Copyright &copy; 2022 CoChat</div>
           </main>
         </div>
       </div>
