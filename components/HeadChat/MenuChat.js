@@ -116,7 +116,7 @@ const MenuChat = ({ code }) => {
         () => {
           getDownloadURL(storageRef).then((url) => {
             // Delete image on firestorage before if already set
-            if (data.droom_picture && data.room_picture != '') {
+            if (data.room_picture && data.room_picture != '') {
               const regex = /room_pictures%2F(.*?)\?/gm;
               const roomPictureBefore = regex.exec(data.room_picture)[1];
               const desertRef = ref(storage, 'room_pictures/' + roomPictureBefore);
