@@ -16,10 +16,9 @@ const Table = () => {
       snapshot.forEach((doc) => {
         allDocs.push(doc.data());
       });
+      setData(allDocs);
     });
   }, []);
-
-  console.log(page);
 
   return (
     <>
