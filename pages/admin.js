@@ -8,6 +8,7 @@ import bcrypt from 'bcryptjs';
 import Head from 'next/head';
 import * as jose from 'jose';
 import { toast } from 'react-toastify';
+import FormInput from '@/components/FormInput';
 
 const secret = process.env.NEXT_PUBLIC_SECRET_JWT;
 
@@ -112,20 +113,30 @@ const Admin = () => {
             <form onSubmit={handleLogin}>
               <div className="mt-14">
                 <div>
-                  <label htmlFor="username" className="text-sm">
-                    Username
-                  </label>
-                  <input type="text" name="username" className="custom-input" onChange={changeHandler} required />
+                  <FormInput
+                    label="Username"
+                    value={fields.username}
+                    type="text"
+                    name="username"
+                    onChange={changeHandler}
+                  />
                 </div>
                 <div className="mt-6">
-                  <label htmlFor="password" className="text-sm">
-                    Password
-                  </label>
-                  <input type="password" name="password" className="custom-input" onChange={changeHandler} required />
+                  <FormInput
+                    label="Password"
+                    value={fields.password}
+                    type="password"
+                    name="password"
+                    onChange={changeHandler}
+                  />
                 </div>
 
                 <div className="mt-4 flex items-center space-x-2">
-                  <input type="checkbox" id="rememberMe" className="h-4 w-4 accent-blue-500" />
+                  <input
+                    type="checkbox"
+                    id="rememberMe"
+                    className="h-4 w-4 accent-blue-500 focus:ring focus:ring-blue-400 focus:ring-offset-1"
+                  />
                   <label htmlFor="rememberMe" className="text-sm">
                     Ingat Saya
                   </label>
