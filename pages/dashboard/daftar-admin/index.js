@@ -3,7 +3,6 @@ import Table from '@/components/Table';
 import { useEffect, useState } from 'react';
 import { db } from '@/services/firebase';
 import { onSnapshot, collection } from 'firebase/firestore';
-import ButtonIcon from '@/components/ButtonIcon';
 import Link from 'next/link';
 
 const DaftarAdmin = () => {
