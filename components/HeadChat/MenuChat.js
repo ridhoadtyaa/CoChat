@@ -75,8 +75,12 @@ const MenuChat = ({ code }) => {
     onSnapshot(doc(db, 'room-chat', code), (doc) => {
       setData(doc.data());
       setNamaRuangan(doc.data().room_name);
+      if (doc.data().room_master != user.uid && doc.data().room_state === 'inactive') {
+        toast.success('Ruangan telah di nonaktifkan oleh pemilik ruangan');
+        Router.push('/');
+      }
     });
-  }, [code]);
+  }, [code, user]);
 
   const ubahNamaHandler = async (e) => {
     e.preventDefault();
@@ -140,6 +144,16 @@ const MenuChat = ({ code }) => {
     navigator.clipboard.writeText(customText);
     toast.success('Info ruangan berhasil disalin');
     setModalBagikanInfo(false);
+  };
+
+  const bubarkanHandler = async () => {
+    updateDoc(doc(db, 'room-chat', code), {
+      room_state: 'inactive',
+    }).then(() => {
+      toast.success('Ruangan berhasil dibubarkan');
+      setModaBubarkan(false);
+      Router.push('/');
+    });
   };
 
   const clickMenuHandler = (menu) => {
@@ -379,7 +393,10 @@ const MenuChat = ({ code }) => {
       <CustomModal closeModal={() => setModaBubarkan(false)} isOpen={modalBubarkan}>
         <h3 className="text-center text-lg font-semibold">Bubarkan Ruangan</h3>
         <div className="mt-6 flex items-center justify-center space-x-4">
-          <button className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600">
+          <button
+            onClick={bubarkanHandler}
+            className="rounded-md bg-blue-500 py-2 px-6 text-sm text-white transition duration-300 hover:bg-blue-600"
+          >
             Konfirmasi
           </button>
           <button

@@ -15,7 +15,7 @@ const CodeForm = () => {
     setLoading(true);
     const docRef = doc(db, 'room-chat', inputCode);
     const docSnap = await getDoc(docRef);
-    if (docSnap.data() === undefined) {
+    if (docSnap.data() === undefined || docSnap.data().room_state === 'inactive') {
       toast.error('Ruangan chat tidak ditemukan');
       setInputCode('');
     } else {

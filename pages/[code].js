@@ -35,6 +35,13 @@ export const getServerSideProps = async ({ params: { code } }) => {
         destination: '/',
       },
     };
+  } else if (docSnap.data().room_state === 'inactive') {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
   }
   return { props: { code } };
 };
