@@ -15,7 +15,7 @@ const DashboardPage = ({ title = 'Dashboard', children }) => {
           <NavbarDashboard />
 
           <main className="flex h-full flex-col px-10 pt-28 pb-5">
-            <h3 className="text-xl font-semibold">{title}</h3>
+            <h3 className="text-2xl font-semibold">{title}</h3>
 
             <div className="mt-8 grow">{children}</div>
             <div className="mt-10 text-slate-500">Copyright &copy; 2022 CoChat</div>
