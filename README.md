@@ -1,11 +1,14 @@
-Specify the type of commit:
+<h1 align="center">CoChat 👋</h1>
 
-- feat: The new feature you're adding to a particular application
-- fix: A bug fix
-- style: Feature and updates related to styling
-- refactor: Refactoring a specific section of the codebase
-- test: Everything related to testing
-- docs: Everything related to documentation
-- chore: Regular code maintenance.[ You can also use emojis to represent commit types]
+<p>
+  CoChat adalah sebuah website yang memungkinkan membuat grup chat dengan mudah dimanapun dan kapanpun.
+</p>
 
-https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/
+## 🚀 Teknologi
+
+- NextJS
+- Tailwind CSS
+- Firebase
+- Headless UI
+
+Landing page design by [Nauval](https://www.figma.com/community/file/1061306005803309728)
