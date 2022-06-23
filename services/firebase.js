@@ -48,7 +48,7 @@ export const createRoom = async () => {
       room_name: 'Room ' + roomID,
       room_description: '',
       room_picture:
-        'https://firebasestorage.googleapis.com/v0/b/cochat-3fadc.appspot.com/o/room_picture%2FGroup-of-People.jpg?alt=media&token=10948287-5867-4680-94ac-b0508f21cf16',
+        'https://firebasestorage.googleapis.com/v0/b/cochat-3fadc.appspot.com/o/Group-of-People.jpg?alt=media&token=85935fc7-4499-4db7-8779-44fc6a0caf0d',
       room_state: 'active',
       room_created_at: new Date(),
       chats: [],
