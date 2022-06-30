@@ -12,6 +12,12 @@ const CodeForm = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!inputCode) {
+      toast.error('Isi kode terlebih dahulu!');
+      return;
+    }
+
     setLoading(true);
     const docRef = doc(db, 'room-chat', inputCode);
     const docSnap = await getDoc(docRef);
